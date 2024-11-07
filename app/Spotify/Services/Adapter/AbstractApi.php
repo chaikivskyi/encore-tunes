@@ -10,6 +10,8 @@ abstract class AbstractApi
 {
     protected const API_URL = 'https://api.spotify.com/v1';
 
+    private const CACHE_TTL = 86400;
+
     public function __construct(private AccessToken $accessToken)
     {
     }
@@ -27,5 +29,20 @@ abstract class AbstractApi
         ]);
 
         throw new SpotifyApiException('Spotify API error');
+    }
+
+    protected function getCacheKey(string $entityName, string $id)
+    {
+        return sprintf(
+            'spotify_%s_%s_%s',
+            strtolower(class_basename(static::class)),
+            $entityName,
+            $id
+        );
+    }
+
+    protected function getCacheTtl(): int
+    {
+        return self::CACHE_TTL;
     }
 }

@@ -38,15 +38,15 @@ class SpotifySettings extends SettingsPage
                     ->reactive()
                     ->getSearchResultsUsing(fn (string $search) => $this->getArtistsList($search))
                     ->getOptionLabelUsing(fn (?string $value) => $this->getArtistsOptionsLabels($value))
-                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('tracks', null)),
+                    ->afterStateUpdated(fn (Set $set) => $set('tracks', [])),
                 Repeater::make('tracks')
                     ->schema([
                         Select::make('album')
-                            ->options(fn (Get $get) => $this->getAlbumsList($get('../../artist')))
+                            ->options(fn (Get $get) => $get('../../artist') ? $this->getAlbumsList($get('../../artist')) : [])
                             ->required()
                             ->reactive(),
                         Select::make('track')
-                            ->options(fn (Get $get) => $this->getTracksList($get('album')))
+                            ->options(fn (Get $get) => $get('album') ? $this->getTracksList($get('album')): [])
                             ->required(),
                     ])
                     ->columns(2)
