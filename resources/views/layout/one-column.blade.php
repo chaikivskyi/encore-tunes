@@ -6,7 +6,7 @@
         <div>
             @include('components.header')
 
-            <div id="main" class="row">
+            <div id="main" class="max-w-screen-xl m-auto">
                 @yield('content')
             </div>
 
