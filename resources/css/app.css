@@ -1,4 +1,6 @@
-@import "components/spotify-tracks.css";
+@import "spotify-tracks.css";
+@import "message.css";
+@import 'swiper/swiper-bundle.css';
 
 @tailwind base;
 @tailwind components;

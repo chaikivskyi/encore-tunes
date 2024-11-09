@@ -6,7 +6,7 @@ use App\Spotify\Enums\SpotifySearchTypeEnum;
 use App\Spotify\Services\Adapter\Albums;
 use App\Spotify\Services\Adapter\Artists;
 use App\Spotify\Services\Adapter\Search;
-use App\Spotify\Settings\SpotifySettings as SpotifySettingsModel;
+use App\Spotify\Settings\SpotifySettings;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
@@ -15,13 +15,13 @@ use Filament\Forms\Set;
 use Filament\Pages\SettingsPage;
 use Throwable;
 
-class SpotifySettings extends SettingsPage
+class SpotifySettingsPage extends SettingsPage
 {
     protected static ?string $navigationGroup = 'Spotify';
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
 
-    protected static string $settings = SpotifySettingsModel::class;
+    protected static string $settings = SpotifySettings::class;
 
     protected static ?string $title = 'Settings';
 

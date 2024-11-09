@@ -5,4 +5,5 @@
     <img class="lg:hidden" src="{{ URL::asset('media/home/main-mobile.jpg') }}" />
 
     <livewire:spotify.spotify-tracks />
+    @include('components.contact-block')
 @endsection

@@ -2,7 +2,7 @@
 <html>
     @include('components.head')
 
-    <body class="text-white">
+    <body>
         <div>
             @include('components.header')
 

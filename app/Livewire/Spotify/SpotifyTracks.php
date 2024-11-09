@@ -20,6 +20,6 @@ class SpotifyTracks extends Component
 
     public function render()
     {
-        return view('livewire.spotify-tracks');
+        return view('livewire.spotify.spotify-tracks');
     }
 }
