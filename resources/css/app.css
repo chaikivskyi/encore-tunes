@@ -15,3 +15,7 @@
         transform: rotate(-45deg);
     }
 }
+
+html {
+    scroll-behavior: smooth;
+}

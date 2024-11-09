@@ -7,13 +7,10 @@
         </div>
         <div class="flex gap-16">
             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                <a href="#" class="text-sm font-semibold leading-6">Contact</a>
+                <a href="#tracks-header" class="text-sm font-semibold leading-6">Tracks</a>
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                <a href="#" class="text-sm font-semibold leading-6">Videos</a>
-            </div>
-            <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                <a href="#" class="text-sm font-semibold leading-6">Photo</a>
+                <a href="#contact-me-header" class="text-sm font-semibold leading-6">Contact</a>
             </div>
         </div>
         <div class="w-7 h-6 block relative cursor-pointer lg:hidden" x-on:click="expanded = ! expanded">

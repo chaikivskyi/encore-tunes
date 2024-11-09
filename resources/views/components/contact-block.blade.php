@@ -1,6 +1,6 @@
 <div>
     <div class="w-full border-b-2 my-5 px-5 lg:p-0">
-        <h2 class="text-4xl font-extrabold mb-2">Contact Me</h2>
+        <h2 id="contact-me-header" class="text-4xl font-extrabold mb-2">Contact Me</h2>
     </div>
 
     <div class="sm:flex sm:flex-row sm:justify-center mx-5">
