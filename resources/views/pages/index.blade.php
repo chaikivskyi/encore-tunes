@@ -1,4 +1,4 @@
-@extends('layout.one-column')
+@extends('layouts.one-column')
 
 @section('content')
     <img class="hidden lg:block w-full max-h-[550px] object-cover" src="{{ URL::asset('media/home/main.jpeg') }}" />

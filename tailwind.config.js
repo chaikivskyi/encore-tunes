@@ -1,9 +1,13 @@
+import defaultTheme from 'tailwindcss/defaultTheme';
+import forms from '@tailwindcss/forms';
+
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
-        "./resources/**/*.blade.php",
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './storage/framework/views/*.php',
+        './resources/views/**/*.blade.php',
         "./resources/**/*.js",
-        "./resources/**/*.vue",
         "./node_modules/flowbite/**/*.js"
     ],
     safelist: [
@@ -15,10 +19,12 @@ export default {
         'text-sky-50',
     ],
     theme: {
-        extend: {},
+        extend: {
+        },
     },
+
     plugins: [
+        forms,
         require('flowbite/plugin')
     ],
-}
-
+};
