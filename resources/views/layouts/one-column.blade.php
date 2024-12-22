@@ -15,8 +15,9 @@
                 @endif
             </div>
 
-            <x-footer />
             @livewireScriptConfig
+
+            @stack('scripts')
         </div>
     </body>
 </html>

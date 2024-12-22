@@ -10,5 +10,11 @@
 
     <livewire:spotify.spotify-tracks />
 
+    <div class="w-full border-b-2 my-5 px-5 lg:p-0">
+        <h2 id="tracks-header" class="text-4xl font-extrabold mb-2">Calendar</h2>
+    </div>
+
+    <livewire:calendar.calendar />
+
     @include('components.contact-block')
 @endsection

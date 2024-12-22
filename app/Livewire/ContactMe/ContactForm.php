@@ -4,7 +4,7 @@ namespace App\Livewire\ContactMe;
 
 use App\ContactMe\Mail\ContactMeMail;
 use App\ContactMe\Settings\ContactMeSettings;
-use App\Notifications\Enums\NotificationTypeEnum;
+use App\Notifications\Traits\NotificationDispatcherTrait;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -12,6 +12,8 @@ use Throwable;
 
 class ContactForm extends Component
 {
+    use NotificationDispatcherTrait;
+
     #[Validate('required|min:3')]
     public string $name;
 
@@ -27,18 +29,9 @@ class ContactForm extends Component
 
         try {
             Mail::to($settings->email)->send(new ContactMeMail($this->name, $this->email, $this->message));
-
-            $this->dispatch(
-                'newNotification',
-                'Your message has been successfully submitted, and we will contact you as soon as possible.',
-                NotificationTypeEnum::Success
-            );
+            $this->addSuccessMessage('Your message has been successfully submitted, and we will contact you as soon as possible.');
         } catch (Throwable) {
-            $this->dispatch(
-                'newNotification',
-                'Something went wrong. Please try again later.',
-                NotificationTypeEnum::Error
-            );
+            $this->addErrorMessage('Something went wrong. Please try again later.');
         }
     }
 

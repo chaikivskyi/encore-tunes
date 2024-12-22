@@ -14,5 +14,7 @@
         </div>
 
         @livewireScriptConfig
+
+        @stack('scripts')
     </body>
 </html>
