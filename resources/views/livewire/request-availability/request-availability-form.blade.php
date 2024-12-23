@@ -3,15 +3,6 @@ beforeSubmit: function () {
     $wire.set('date_from', $store.requestAvailabilityDateStart);
     $wire.set('date_to', $store.requestAvailabilityDateEnd);
 }}" wire:submit="submit" x-on:submit.prevent="beforeSubmit">
-    <x-slot:title>
-        Request Availability for:
-
-        <span class="font-bold" x-text="$store.requestAvailabilityDateStart"></span>
-        <template x-if="$store.requestAvailabilityDateEnd">
-            <span class="font-bold" x-text="' - ' + $store.requestAvailabilityDateEnd"></span>
-        </template>
-    </x-slot:title>
-
     <div>
         <x-input-label for="contact-data-comment" :value="__('Contact Data')"/>
         <x-text-input id="contact-data-comment" type="text" wire:model="contact_data" name="contact_data" autofocus

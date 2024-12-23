@@ -1,25 +1,42 @@
+@php
+    use Illuminate\Support\Js;
+@endphp
 
 <div x-data="{
     dateStart: null,
     dateEnd: null,
-    getRequestAvailabilityButton: () => document.getElementsByClassName('fc-requestAvailability-button')[0]
-}" >
+    getRequestAvailabilityButton: () => document.getElementsByClassName('fc-requestAvailability-button')[0],
+    isEventOverlapping: function (calendar) {
+        return calendar.getEvents().some(event => {
+            const eventStart = event.start.toISOString().split('T')[0];
+            const eventEnd = event.end ? event.end.toISOString().split('T')[0] : eventStart;
+
+            return (this.dateStart >= eventStart && this.dateStart <= eventEnd)
+                || (this.dateEnd && this.dateEnd >= eventStart && this.dateEnd <= eventEnd);
+        });
+    }
+}">
     <div x-init="new Calendar($refs.calendar, {
     plugins: [interactionPlugin, dayGridPlugin],
     initialView: 'dayGridMonth',
-    editable: true,
+    validRange: {
+        start: new Date().toISOString().split('T')[0]
+    },
+    events: {{ Js::from($events) }},
+    editable: false,
     selectable: true,
     viewDidMount: function () {
         getRequestAvailabilityButton().disabled = true;
     },
     dateClick: function (info) {
         dateStart = info.dateStr;
-        getRequestAvailabilityButton().disabled = false;
+        dateEnd = null;
+        getRequestAvailabilityButton().disabled = isEventOverlapping(this);
     },
     select: function (info) {
         dateStart = info.startStr;
         dateEnd = info.endStr;
-        getRequestAvailabilityButton().disabled = false;
+        getRequestAvailabilityButton().disabled = isEventOverlapping(this);
     },
     headerToolbar: {
         left: 'title',
@@ -42,6 +59,15 @@
     </div>
 
     <x-modal name="requestAvailability">
-        <livewire:calendar.modal.request-availability />
+        <x-slot:title>
+            Request Availability for:
+
+            <span class="font-bold" x-text="$store.requestAvailabilityDateStart"></span>
+            <template x-if="$store.requestAvailabilityDateEnd">
+                <span class="font-bold" x-text="' - ' + $store.requestAvailabilityDateEnd"></span>
+            </template>
+        </x-slot:title>
+
+        <livewire:request-availability.request-availability-form/>
     </x-modal>
 </div>
