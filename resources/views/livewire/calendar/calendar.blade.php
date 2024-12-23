@@ -2,7 +2,7 @@
 <div x-data="{
     dateStart: null,
     dateEnd: null,
-    getRequestAvailabilityButton: () => return document.getElementsByClassName('fc-requestAvailability-button')[0]
+    getRequestAvailabilityButton: () => document.getElementsByClassName('fc-requestAvailability-button')[0]
 }" >
     <div x-init="new Calendar($refs.calendar, {
     plugins: [interactionPlugin, dayGridPlugin],
@@ -10,16 +10,16 @@
     editable: true,
     selectable: true,
     viewDidMount: function () {
-        document.getElementsByClassName('fc-requestAvailability-button')[0].disabled = true;
+        getRequestAvailabilityButton().disabled = true;
     },
     dateClick: function (info) {
         dateStart = info.dateStr;
-        document.getElementsByClassName('fc-requestAvailability-button')[0].disabled = false;
+        getRequestAvailabilityButton().disabled = false;
     },
     select: function (info) {
         dateStart = info.startStr;
         dateEnd = info.endStr;
-        document.getElementsByClassName('fc-requestAvailability-button')[0].disabled = false;
+        getRequestAvailabilityButton().disabled = false;
     },
     headerToolbar: {
         left: 'title',
