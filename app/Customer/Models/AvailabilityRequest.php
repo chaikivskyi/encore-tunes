@@ -12,7 +12,7 @@ class AvailabilityRequest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['contact_data', 'date_from', 'date_to', 'state', 'user_id'];
+    protected $fillable = ['contact_data', 'date_from', 'date_to', 'state', 'user_id', 'comment'];
 
     protected $attributes = [
         'state' => RequestStateEnum::Pending->value,
@@ -21,5 +21,22 @@ class AvailabilityRequest extends Model
     public function user(): HasOne
     {
         return $this->hasOne(User::class);
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'contact_data' => 'string',
+            'comment' => 'string',
+            'date_from' => 'date',
+            'date_to' => 'date',
+            'state' => 'string',
+            'user_id' => 'integer'
+        ];
     }
 }

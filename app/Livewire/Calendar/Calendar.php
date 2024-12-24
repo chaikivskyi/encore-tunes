@@ -47,8 +47,8 @@ class Calendar extends Component
         return [
             'id' => $availabilityRequest->id,
             'title' => $this->getEventNameByState($availabilityRequest->state),
-            'start' => $availabilityRequest->date_from,
-            'end' => $availabilityRequest->date_to,
+            'start' => $availabilityRequest->date_from->toDateString(),
+            'end' => $availabilityRequest->date_to->toDateString(),
             'color' => $this->getColorByState($availabilityRequest->state),
         ];
     }

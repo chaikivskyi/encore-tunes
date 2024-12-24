@@ -11,14 +11,15 @@
             const eventStart = event.start.toISOString().split('T')[0];
             const eventEnd = event.end ? event.end.toISOString().split('T')[0] : eventStart;
 
-            return (this.dateStart >= eventStart && this.dateStart <= eventEnd)
-                || (this.dateEnd && this.dateEnd >= eventStart && this.dateEnd <= eventEnd);
+            return (this.dateStart >= eventStart && this.dateStart < eventEnd)
+                || (this.dateEnd > eventStart && this.dateEnd < eventEnd);
         });
     }
 }">
     <div x-init="new Calendar($refs.calendar, {
     plugins: [interactionPlugin, dayGridPlugin],
     initialView: 'dayGridMonth',
+    timeZone: 'UTC',
     validRange: {
         start: new Date().toISOString().split('T')[0]
     },
@@ -28,14 +29,10 @@
     viewDidMount: function () {
         getRequestAvailabilityButton().disabled = true;
     },
-    dateClick: function (info) {
-        dateStart = info.dateStr;
-        dateEnd = null;
-        getRequestAvailabilityButton().disabled = isEventOverlapping(this);
-    },
     select: function (info) {
-        dateStart = info.startStr;
         dateEnd = info.endStr;
+        dateStart = info.startStr;
+
         getRequestAvailabilityButton().disabled = isEventOverlapping(this);
     },
     headerToolbar: {
