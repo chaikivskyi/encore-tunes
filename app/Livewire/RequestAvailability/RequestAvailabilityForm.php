@@ -28,6 +28,13 @@ class RequestAvailabilityForm extends Component
     #[Validate('nullable|date|after:date_from')]
     public string $date_to;
 
+    public function mount()
+    {
+        if (Auth::check()) {
+            $this->contact_data = Auth::user()->email;
+        }
+    }
+
     public function submit(AvailabilityRequestRepository $repository)
     {
         if (! Auth::check()) {
