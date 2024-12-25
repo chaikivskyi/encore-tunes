@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Calendar;
 
+use App\Customer\Contracts\AvailabilityRequestRepositoryInterface;
 use App\Customer\Enums\RequestStateEnum;
 use App\Customer\Models\AvailabilityRequest;
-use App\Customer\Repositories\AvailabilityRequestRepository;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -12,16 +12,16 @@ class Calendar extends Component
 {
     public array $events;
 
-    protected AvailabilityRequestRepository $availabilityRequestRepository;
+    protected AvailabilityRequestRepositoryInterface $availabilityRequestRepository;
 
-    public function mount(AvailabilityRequestRepository $availabilityRequestRepository)
+    public function mount(AvailabilityRequestRepositoryInterface $availabilityRequestRepository)
     {
         $this->availabilityRequestRepository = $availabilityRequestRepository;
         $this->events = $this->getEvents();
     }
 
     #[On('availability-request-created')]
-    public function eventAdded(array $params, AvailabilityRequestRepository $availabilityRequestRepository): void
+    public function eventAdded(array $params, AvailabilityRequestRepositoryInterface $availabilityRequestRepository): void
     {
         $availabilityRequestId = $params['availabilityRequestId'];
         $availabilityRequest = $availabilityRequestRepository->getById($availabilityRequestId);

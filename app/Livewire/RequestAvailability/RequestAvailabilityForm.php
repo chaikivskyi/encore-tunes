@@ -2,14 +2,16 @@
 
 namespace App\Livewire\RequestAvailability;
 
-use App\Customer\Repositories\AvailabilityRequestRepository;
+use App\Customer\Contracts\AvailabilityRequestRepositoryInterface;
 use App\Notifications\Traits\NotificationDispatcherTrait;
+use Carbon\Carbon;
 use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Psr\Log\LoggerInterface;
 use Throwable;
 
 class RequestAvailabilityForm extends Component
@@ -22,10 +24,10 @@ class RequestAvailabilityForm extends Component
     #[Validate('required|string')]
     public string $comment;
 
-    #[Validate('required|date|after:today')]
+    #[Validate('required|date|after:tomorrow')]
     public string $date_from;
 
-    #[Validate('nullable|date|after:date_from')]
+    #[Validate('required|date|after:date_from')]
     public string $date_to;
 
     public function mount()
@@ -35,7 +37,7 @@ class RequestAvailabilityForm extends Component
         }
     }
 
-    public function submit(AvailabilityRequestRepository $repository)
+    public function submit(AvailabilityRequestRepositoryInterface $repository, LoggerInterface $logger)
     {
         if (! Auth::check()) {
             abort(403);
@@ -46,6 +48,10 @@ class RequestAvailabilityForm extends Component
             $lock = Cache::lock('availability_request', 10);
 
             if ($lock->block(5)) {
+                if ($repository->countRequestsBeetweenDates(new Carbon($data['date_from']), new Carbon($data['date_to'])) > 0) {
+                    throw ValidationException::withMessages(['date_from' => 'Selected date is already booked.']);
+                }
+
                 $userId = Auth::id();
                 $data['user_id'] = $userId;
                 $request = $repository->create($data);
@@ -64,9 +70,12 @@ class RequestAvailabilityForm extends Component
         } catch (LockTimeoutException) {
             $this->addErrorMessage('System is busy. Please try again later in a few minutes.');
         } catch (Throwable $e) {
+            $logger->error('Request availability form submit error: ' . $e->getMessage());
             $this->addErrorMessage('Something went wrong. Please try again later.');
         } finally {
-            $lock->release();
+            if (isset($lock)) {
+                $lock->release();
+            }
         }
     }
 

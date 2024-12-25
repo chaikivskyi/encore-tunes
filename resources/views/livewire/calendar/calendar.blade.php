@@ -32,7 +32,7 @@
     select: function (info) {
         dateEnd = info.endStr;
         dateStart = info.startStr;
-
+console.log(info);
         getRequestAvailabilityButton().disabled = isEventOverlapping(this);
     },
     headerToolbar: {
