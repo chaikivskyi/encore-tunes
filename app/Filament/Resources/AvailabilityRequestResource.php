@@ -26,6 +26,10 @@ class AvailabilityRequestResource extends Resource
                 TextColumn::make('contact_data')
                     ->searchable(),
                 TextColumn::make('comment'),
+                TextColumn::make('date_from')
+                    ->date(),
+                TextColumn::make('date_to')
+                    ->date(),
                 TextColumn::make('state')
                     ->sortable()
                     ->searchable()
@@ -56,13 +60,6 @@ class AvailabilityRequestResource extends Resource
                     ->icon('heroicon-o-x-mark')
                     ->requiresConfirmation(),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
