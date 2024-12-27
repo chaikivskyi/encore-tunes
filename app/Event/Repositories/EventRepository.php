@@ -35,7 +35,7 @@ class EventRepository implements EventRepositoryInterface
 
     public function countActiveEventsBeetweenDates(Carbon $from, Carbon $to): int
     {
-        return Event::whereNot('state', EventStateEnum::Rejected->value)
+        return Event::whereIn('state', [EventStateEnum::Pending->value, EventStateEnum::Approved->value])
             ->where(function (Builder $query) use ($from, $to): void {
                 $query
                     ->whereDate('date_from', '<=', $from->timestamp)
