@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Customer\Enums;
+namespace App\Event\Enums;
 
-enum RequestStateEnum: string
+enum EventStateEnum: string
 {
     case Pending = 'pending';
     case Approved = 'approved';

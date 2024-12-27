@@ -32,12 +32,42 @@
     select: function (info) {
         dateEnd = info.endStr;
         dateStart = info.startStr;
-console.log(info);
+
         getRequestAvailabilityButton().disabled = isEventOverlapping(this);
     },
     headerToolbar: {
         left: 'title',
         right: 'requestAvailability, prev, next, today'
+    },
+    eventContent: function (info) {
+        let eventContainer = document.createElement('div');
+        let title = document.createElement('span');
+        title.innerText = info.event.title;
+        eventContainer.appendChild(title);
+
+        if (info.event.extendedProps.user_id && info.event.extendedProps.user_id === {{ Js::from($userId) }}) {
+            let deleteButton = document.createElement('span');
+            deleteButton.innerHTML = '&times;';
+            deleteButton.classList.add(
+                'cursor-pointer',
+                'text-red-500',
+                'hover:text-red-700',
+                'float-end',
+                'mr-1',
+                'font-bold',
+            );
+            eventContainer.appendChild(deleteButton);
+
+            deleteButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (confirm('Are you sure you want to delete this request?')) {
+                    var event = info.event;
+                    $wire.deleteEvent(event.id);
+                }
+            });
+        }
+
+        return { domNodes: [eventContainer] };
     },
     customButtons: {
         requestAvailability: {

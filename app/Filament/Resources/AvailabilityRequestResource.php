@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Customer\Enums\RequestStateEnum;
-use App\Customer\Models\AvailabilityRequest;
-use App\Filament\Pages\Customer\ListAvailabilityRequest;
+use App\Event\Enums\EventStateEnum;
+use App\Event\Models\Event;
+use App\Filament\Pages\Event\ListAvailabilityRequest;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AvailabilityRequestResource extends Resource
 {
-    protected static ?string $model = AvailabilityRequest::class;
+    protected static ?string $model = Event::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
 
@@ -35,15 +35,15 @@ class AvailabilityRequestResource extends Resource
                     ->searchable()
                     ->badge()
                     ->color(fn (string $state) => match ($state) {
-                        RequestStateEnum::Approved->value => 'success',
-                        RequestStateEnum::Rejected->value => 'danger',
-                        RequestStateEnum::Pending->value => 'warning',
+                        EventStateEnum::Approved->value => 'success',
+                        EventStateEnum::Rejected->value => 'danger',
+                        EventStateEnum::Pending->value => 'warning',
                         default => 'gray',
                     }),
             ])
             ->filters([
                 SelectFilter::make('state')
-                    ->options(array_column(RequestStateEnum::cases(), 'name', 'value'))
+                    ->options(array_column(EventStateEnum::cases(), 'name', 'value'))
             ])
             ->actions([
                 Action::make('Approve')

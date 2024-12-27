@@ -2,36 +2,58 @@
 
 namespace App\Livewire\Calendar;
 
-use App\Customer\Contracts\AvailabilityRequestRepositoryInterface;
-use App\Customer\Enums\RequestStateEnum;
-use App\Customer\Models\AvailabilityRequest;
+use App\Event\Contracts\EventRepositoryInterface;
+use App\Event\Enums\EventStateEnum;
+use App\Event\Models\Event;
+use App\Notifications\Traits\NotificationDispatcherTrait;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Throwable;
 
 class Calendar extends Component
 {
+    use NotificationDispatcherTrait;
+
+    public ?int $userId;
+
     public array $events;
 
-    protected AvailabilityRequestRepositoryInterface $availabilityRequestRepository;
-
-    public function mount(AvailabilityRequestRepositoryInterface $availabilityRequestRepository)
+    public function mount(EventRepositoryInterface $eventRepository)
     {
-        $this->availabilityRequestRepository = $availabilityRequestRepository;
-        $this->events = $this->getEvents();
+        $this->userId = auth()->id();
+        $this->events = $this->getEvents($eventRepository);
     }
 
-    #[On('availability-request-created')]
-    public function eventAdded(array $params, AvailabilityRequestRepositoryInterface $availabilityRequestRepository): void
+    #[On('event-created')]
+    public function eventAdded(array $params, EventRepositoryInterface $eventRepository): void
     {
-        $availabilityRequestId = $params['availabilityRequestId'];
-        $availabilityRequest = $availabilityRequestRepository->getById($availabilityRequestId);
+        $eventId = $params['eventId'];
+        $availabilityRequest = $eventRepository->getById($eventId);
         $this->events[] = $this->availabilityRequestToArray($availabilityRequest);
     }
 
-    public function getEvents(): array
+    public function deleteEvent(int $eventId, EventRepositoryInterface $eventRepository): void
     {
-        $requests = $this->availabilityRequestRepository
-            ->getActiveRequests();
+        try {
+            $event = $eventRepository->getById($eventId);
+            $this->authorize('delete', $event);
+            $eventRepository->delete($event);
+            $this->addSuccessMessage('Availability request has been successfully deleted.');
+            $this->events = array_filter($this->events, fn($event) => $event['id'] !== $eventId);
+        } catch (AuthorizationException) {
+            abort(403);
+        } catch (Throwable $e) {
+            Log::error('Error deleting event', ['exception' => $e]);
+            $this->addErrorMessage('Something went wrong. Please try again later.');
+        }
+    }
+
+    public function getEvents(EventRepositoryInterface $eventRepository): array
+    {
+        $requests = $eventRepository
+            ->getActiveEvents();
 
         $events = [];
 
@@ -42,22 +64,25 @@ class Calendar extends Component
         return $events;
     }
 
-    private function availabilityRequestToArray(AvailabilityRequest $availabilityRequest): array
+    private function availabilityRequestToArray(Event $event): array
     {
         return [
-            'id' => $availabilityRequest->id,
-            'title' => $this->getEventNameByState($availabilityRequest->state),
-            'start' => $availabilityRequest->date_from->toDateString(),
-            'end' => $availabilityRequest->date_to->toDateString(),
-            'color' => $this->getColorByState($availabilityRequest->state),
+            'id' => $event->id,
+            'title' => $this->getEventNameByState($event->state),
+            'start' => $event->date_from->toDateString(),
+            'end' => $event->date_to->toDateString(),
+            'color' => $this->getColorByState($event->state),
+            'extendedProps' => [
+                'user_id' => $event->user_id,
+            ],
         ];
     }
 
     private function getEventNameByState(string $state)
     {
         return match ($state) {
-            RequestStateEnum::Pending->value => 'Pending Reservation',
-            RequestStateEnum::Approved->value => 'Reserved',
+            EventStateEnum::Pending->value => 'Pending Reservation',
+            EventStateEnum::Approved->value => 'Reserved',
             default => 'Undefined State'
         };
     }
@@ -65,8 +90,8 @@ class Calendar extends Component
     private function getColorByState(string $state)
     {
         return match ($state) {
-            RequestStateEnum::Pending->value => '#3F83F880',
-            RequestStateEnum::Approved->value => '#008000',
+            EventStateEnum::Pending->value => '#3F83F880',
+            EventStateEnum::Approved->value => '#008000',
             default => '#FF5733'
         };
     }

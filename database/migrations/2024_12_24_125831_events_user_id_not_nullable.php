@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('availability_requests', function (Blueprint $table) {
+        Schema::table('events', function (Blueprint $table) {
             $table->foreignId('user_id')->nullable()->change();
         });
     }
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('availability_requests', function (Blueprint $table) {
+        Schema::table('events', function (Blueprint $table) {
             $table->foreignId('user_id')->nullable(false)->change();
         });
     }

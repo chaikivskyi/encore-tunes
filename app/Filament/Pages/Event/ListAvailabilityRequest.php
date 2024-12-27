@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Pages\Customer;
+namespace App\Filament\Pages\Event;
 
 use App\Filament\Resources\AvailabilityRequestResource;
 use Filament\Resources\Pages\ListRecords;

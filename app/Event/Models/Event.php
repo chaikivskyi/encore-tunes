@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Customer\Models;
+namespace App\Event\Models;
 
-use App\Customer\Enums\RequestStateEnum;
+use App\Event\Enums\EventStateEnum;
 use App\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class AvailabilityRequest extends Model
+class Event extends Model
 {
     use HasFactory;
 
     protected $fillable = ['contact_data', 'date_from', 'date_to', 'state', 'user_id', 'comment'];
 
     protected $attributes = [
-        'state' => RequestStateEnum::Pending->value,
+        'state' => EventStateEnum::Pending->value,
     ];
 
     public function user(): HasOne
