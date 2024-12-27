@@ -34,18 +34,18 @@ class Calendar extends Component
         $this->events[] = $this->availabilityRequestToArray($availabilityRequest);
     }
 
-    public function deleteEvent(int $eventId, EventRepositoryInterface $eventRepository): void
+    public function cancelEvent(int $eventId, EventRepositoryInterface $eventRepository): void
     {
         try {
             $event = $eventRepository->getById($eventId);
-            $this->authorize('delete', $event);
-            $eventRepository->delete($event);
-            $this->addSuccessMessage('Availability request has been successfully deleted.');
+            $this->authorize('cancel', $event);
+            $eventRepository->update($event, ['state' => EventStateEnum::Canceled->value]);
+            $this->addSuccessMessage('Availability request has been successfully canceled.');
             $this->events = array_filter($this->events, fn($event) => $event['id'] !== $eventId);
         } catch (AuthorizationException) {
             abort(403);
         } catch (Throwable $e) {
-            Log::error('Error deleting event', ['exception' => $e]);
+            Log::error('Error canceling event', ['exception' => $e]);
             $this->addErrorMessage('Something went wrong. Please try again later.');
         }
     }

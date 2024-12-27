@@ -46,9 +46,9 @@
         eventContainer.appendChild(title);
 
         if (info.event.extendedProps.user_id && info.event.extendedProps.user_id === {{ Js::from($userId) }}) {
-            let deleteButton = document.createElement('span');
-            deleteButton.innerHTML = '&times;';
-            deleteButton.classList.add(
+            let cancelButton = document.createElement('span');
+            cancelButton.innerHTML = '&times;';
+            cancelButton.classList.add(
                 'cursor-pointer',
                 'text-red-500',
                 'hover:text-red-700',
@@ -56,13 +56,13 @@
                 'mr-1',
                 'font-bold',
             );
-            eventContainer.appendChild(deleteButton);
+            eventContainer.appendChild(cancelButton);
 
-            deleteButton.addEventListener('click', function(e) {
+            cancelButton.addEventListener('click', function(e) {
                 e.stopPropagation();
-                if (confirm('Are you sure you want to delete this request?')) {
+                if (confirm('Are you sure you want to cancel this request?')) {
                     var event = info.event;
-                    $wire.deleteEvent(event.id);
+                    $wire.cancelEvent(event.id);
                 }
             });
         }

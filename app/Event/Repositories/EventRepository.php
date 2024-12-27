@@ -21,14 +21,14 @@ class EventRepository implements EventRepositoryInterface
         return Event::find($id);
     }
 
-    public function delete(Event $event): ?bool
+    public function update(Event $event, array $data): int
     {
-        return $event->delete();
+        return $event->update($data);
     }
 
     public function getActiveEvents(): Collection
     {
-        return Event::whereNot('state', EventStateEnum::Rejected->value)
+        return Event::whereIn('state', [EventStateEnum::Pending->value, EventStateEnum::Approved->value])
             ->whereDate('date_from', '>=', now()->toDateString())
             ->get();
     }
