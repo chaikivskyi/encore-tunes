@@ -25,7 +25,7 @@ class RequestAvailabilityForm extends Component
     #[Validate('required|string')]
     public string $comment;
 
-    #[Validate('required|date|after:tomorrow')]
+    #[Validate('required|date|after:yesterday')]
     public string $date_from;
 
     #[Validate('required|date|after:date_from')]
@@ -64,7 +64,7 @@ class RequestAvailabilityForm extends Component
             $errors = $e->errors();
 
             if (array_key_exists('date_to', $errors) || array_key_exists('date_from', $errors)) {
-                $this->addErrorMessage('Something went wrong. Please refresh page and try again.');
+                $this->addErrorMessage('Please select valid dates. ' . $e->getMessage());
             }
 
             throw $e;

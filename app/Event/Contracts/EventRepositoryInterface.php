@@ -10,7 +10,7 @@ interface EventRepositoryInterface
 {
     public function create(array $data): Event;
 
-    public function getById(int $id): Event;
+    public function getById(int $id): ?Event;
 
     public function update(Event $event, array $data): int;
 

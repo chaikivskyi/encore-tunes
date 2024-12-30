@@ -8,6 +8,7 @@ use App\Event\Models\Event;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class EventRepository implements EventRepositoryInterface
 {
@@ -16,7 +17,7 @@ class EventRepository implements EventRepositoryInterface
         return Event::create($data);
     }
 
-    public function getById(int $id): Event
+    public function getById(int $id): ?Event
     {
         return Event::find($id);
     }
@@ -29,7 +30,7 @@ class EventRepository implements EventRepositoryInterface
     public function getActiveEvents(): Collection
     {
         return Event::whereIn('state', [EventStateEnum::Pending->value, EventStateEnum::Approved->value])
-            ->whereDate('date_from', '>=', now()->toDateString())
+            ->whereDate('date_to', '>', now()->toDateString())
             ->get();
     }
 
@@ -38,13 +39,16 @@ class EventRepository implements EventRepositoryInterface
         return Event::whereIn('state', [EventStateEnum::Pending->value, EventStateEnum::Approved->value])
             ->where(function (Builder $query) use ($from, $to): void {
                 $query
-                    ->whereDate('date_from', '<=', $from->timestamp)
-                    ->whereDate('date_from', '>', $to->timestamp);
-            })
-            ->where(function (Builder $query) use ($from, $to): void {
-                $query
-                    ->whereDate('date_to', '<', $from->timestamp)
-                    ->whereDate('date_to', '>', $to->timestamp);
+                    ->where(function (Builder $query) use ($from, $to): void {
+                        $query
+                            ->whereDate(DB::raw('DATE(date_from)'), '>=', $from->toDateString())
+                            ->whereDate(DB::raw('DATE(date_from)'), '<', $to->toDateString());
+                    })
+                    ->orWhere(function (Builder $query) use ($from, $to): void {
+                        $query
+                            ->whereDate(DB::raw('DATE(date_to)'), '>', $from->toDateString())
+                            ->whereDate(DB::raw('DATE(date_to)'), '<', $to->toDateString());
+                    });
             })
             ->count();
     }
