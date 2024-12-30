@@ -78,20 +78,20 @@ class Calendar extends Component
         ];
     }
 
-    private function getEventNameByState(string $state)
+    private function getEventNameByState(EventStateEnum $state)
     {
         return match ($state) {
-            EventStateEnum::Pending->value => 'Pending Reservation',
-            EventStateEnum::Approved->value => 'Reserved',
+            EventStateEnum::Pending => 'Pending Reservation',
+            EventStateEnum::Approved => 'Reserved',
             default => 'Undefined State'
         };
     }
 
-    private function getColorByState(string $state)
+    private function getColorByState(EventStateEnum $state)
     {
         return match ($state) {
-            EventStateEnum::Pending->value => '#3F83F880',
-            EventStateEnum::Approved->value => '#008000',
+            EventStateEnum::Pending => '#3F83F880',
+            EventStateEnum::Approved => '#008000',
             default => '#FF5733'
         };
     }

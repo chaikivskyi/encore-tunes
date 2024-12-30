@@ -4,11 +4,22 @@ namespace App\Event\Models;
 
 use App\Event\Enums\EventStateEnum;
 use App\User\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property string $contact_data
+ * @property Carbon $date_from
+ * @property Carbon $date_to
+ * @property EventStateEnum $state
+ * @property int $user_id
+ * @property string $comment
+ * @property-read User $user
+ */
 class Event extends Model
 {
     use HasFactory;
@@ -16,7 +27,7 @@ class Event extends Model
     protected $fillable = ['contact_data', 'date_from', 'date_to', 'state', 'user_id', 'comment'];
 
     protected $attributes = [
-        'state' => EventStateEnum::Pending->value,
+        'state' => EventStateEnum::Pending,
     ];
 
     public function user(): BelongsTo
@@ -41,7 +52,7 @@ class Event extends Model
             'comment' => 'string',
             'date_from' => 'date',
             'date_to' => 'date',
-            'state' => 'string',
+            'state' => EventStateEnum::class,
             'user_id' => 'integer'
         ];
     }

@@ -21,7 +21,7 @@ class EventRepository implements EventRepositoryInterface
         return Event::find($id);
     }
 
-    public function update(Event $event, array $data): int
+    public function update(Event $event, array $data): bool
     {
         return $event->update($data);
     }

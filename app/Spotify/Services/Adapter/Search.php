@@ -11,7 +11,7 @@ class Search extends AbstractApi
     private const SEARCH_LIMIT = 20;
 
     /**
-     * @param SpotifySearchTypeEnum[] $type
+     * @param string[] $type
      * @throws \App\Spotify\Exceptions\SpotifyApiException
      * @throws \Illuminate\Http\Client\ConnectionException
      */
@@ -32,6 +32,6 @@ class Search extends AbstractApi
             return SpotifySearchData::from($response->json());
         }
 
-        $this->handleError('Spotify search error', $response);
+        throw $this->handleError('Spotify search error', $response);
     }
 }

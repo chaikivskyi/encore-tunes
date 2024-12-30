@@ -12,7 +12,7 @@ interface EventRepositoryInterface
 
     public function getById(int $id): ?Event;
 
-    public function update(Event $event, array $data): int;
+    public function update(Event $event, array $data): bool;
 
     public function getActiveEvents(): Collection;
 

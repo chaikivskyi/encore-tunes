@@ -34,10 +34,10 @@ class AvailabilityRequestResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->badge()
-                    ->color(fn (string $state) => match ($state) {
-                        EventStateEnum::Approved->value => 'success',
-                        EventStateEnum::Rejected->value => 'danger',
-                        EventStateEnum::Pending->value => 'warning',
+                    ->color(fn (EventStateEnum $state) => match ($state) {
+                        EventStateEnum::Approved => 'success',
+                        EventStateEnum::Rejected => 'danger',
+                        EventStateEnum::Pending => 'warning',
                         default => 'gray',
                     }),
             ])

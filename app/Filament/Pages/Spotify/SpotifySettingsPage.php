@@ -117,7 +117,7 @@ class SpotifySettingsPage extends SettingsPage
             return [];
         }
 
-        /** @var Albums $spotifyArtists */
+        /** @var Albums $spotifyAlbums */
         $spotifyAlbums = app(Albums::class);
 
         try {
