@@ -3,7 +3,6 @@
 namespace App\Event\Repositories;
 
 use App\Event\Contracts\EventRepositoryInterface;
-use App\Event\Enums\EventStateEnum;
 use App\Event\Models\Event;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,14 +28,14 @@ class EventRepository implements EventRepositoryInterface
 
     public function getActiveEvents(): Collection
     {
-        return Event::whereIn('state', [EventStateEnum::Pending->value, EventStateEnum::Approved->value])
+        return Event::withActiveStates()
             ->whereDate('date_to', '>', now()->toDateString())
             ->get();
     }
 
     public function countActiveEventsBeetweenDates(Carbon $from, Carbon $to): int
     {
-        return Event::whereIn('state', [EventStateEnum::Pending->value, EventStateEnum::Approved->value])
+        return Event::withActiveStates()
             ->where(function (Builder $query) use ($from, $to): void {
                 $query
                     ->where(function (Builder $query) use ($from, $to): void {
