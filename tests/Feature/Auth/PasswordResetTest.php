@@ -18,7 +18,7 @@ class PasswordResetTest extends TestCase
         $response = $this->get('/forgot-password');
 
         $response
-            ->assertSeeVolt('pages.auth.forgot-password')
+            ->assertSeeVolt('auth.forgot-password-form')
             ->assertStatus(200);
     }
 
@@ -28,7 +28,7 @@ class PasswordResetTest extends TestCase
 
         $user = User::factory()->create();
 
-        Volt::test('pages.auth.forgot-password')
+        Volt::test('auth.forgot-password-form')
             ->set('email', $user->email)
             ->call('sendPasswordResetLink');
 
@@ -41,7 +41,7 @@ class PasswordResetTest extends TestCase
 
         $user = User::factory()->create();
 
-        Volt::test('pages.auth.forgot-password')
+        Volt::test('auth.forgot-password-form')
             ->set('email', $user->email)
             ->call('sendPasswordResetLink');
 
@@ -49,7 +49,7 @@ class PasswordResetTest extends TestCase
             $response = $this->get('/reset-password/'.$notification->token);
 
             $response
-                ->assertSeeVolt('pages.auth.reset-password')
+                ->assertSeeVolt('auth.reset-password-form')
                 ->assertStatus(200);
 
             return true;
@@ -62,12 +62,12 @@ class PasswordResetTest extends TestCase
 
         $user = User::factory()->create();
 
-        Volt::test('pages.auth.forgot-password')
+        Volt::test('auth.forgot-password-form')
             ->set('email', $user->email)
             ->call('sendPasswordResetLink');
 
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
-            $component = Volt::test('pages.auth.reset-password', ['token' => $notification->token])
+            $component = Volt::test('auth.reset-password-form', ['token' => $notification->token])
                 ->set('email', $user->email)
                 ->set('password', 'password')
                 ->set('password_confirmation', 'password');

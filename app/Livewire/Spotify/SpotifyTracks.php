@@ -15,7 +15,7 @@ class SpotifyTracks extends Component
             $this->skipRender();
         }
 
-        $this->tracks = array_map(fn (array $record) => $record['track'], $settings->tracks);
+        $this->tracks = array_map(fn (array $record) => $record['track'], $settings->tracks ?: []);
     }
 
     public function render()

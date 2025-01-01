@@ -5,6 +5,7 @@ namespace App\Livewire\ContactMe;
 use App\ContactMe\Mail\ContactMeMail;
 use App\ContactMe\Settings\ContactMeSettings;
 use App\Notifications\Traits\NotificationDispatcherTrait;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -30,7 +31,11 @@ class ContactForm extends Component
         try {
             Mail::to($settings->email)->send(new ContactMeMail($this->name, $this->email, $this->message));
             $this->addSuccessMessage('Your message has been successfully submitted, and we will contact you as soon as possible.');
-        } catch (Throwable) {
+        } catch (Throwable $e) {
+            Log::error('Contact form submit error: ', [
+                'exception' => $e,
+            ]);
+
             $this->addErrorMessage('Something went wrong. Please try again later.');
         }
     }

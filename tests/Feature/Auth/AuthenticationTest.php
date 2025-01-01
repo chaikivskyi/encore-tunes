@@ -17,14 +17,14 @@ class AuthenticationTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSeeVolt('pages.auth.login');
+            ->assertSeeVolt('auth.login-form');
     }
 
     public function test_users_can_authenticate_using_the_login_screen(): void
     {
         $user = User::factory()->create();
 
-        $component = Volt::test('pages.auth.login')
+        $component = Volt::test('auth.login-form')
             ->set('form.email', $user->email)
             ->set('form.password', 'password');
 
@@ -32,7 +32,7 @@ class AuthenticationTest extends TestCase
 
         $component
             ->assertHasNoErrors()
-            ->assertRedirect(route('dashboard', absolute: false));
+            ->assertRedirect(route('index', absolute: false));
 
         $this->assertAuthenticated();
     }
@@ -41,7 +41,7 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $component = Volt::test('pages.auth.login')
+        $component = Volt::test('auth.login-form')
             ->set('form.email', $user->email)
             ->set('form.password', 'wrong-password');
 
@@ -54,26 +54,13 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_navigation_menu_can_be_rendered(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user);
-
-        $response = $this->get('/dashboard');
-
-        $response
-            ->assertOk()
-            ->assertSeeVolt('layout.navigation');
-    }
-
     public function test_users_can_logout(): void
     {
         $user = User::factory()->create();
 
         $this->actingAs($user);
 
-        $component = Volt::test('layout.navigation');
+        $component = Volt::test('navigation.navigation');
 
         $component->call('logout');
 
