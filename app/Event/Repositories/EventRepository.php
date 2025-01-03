@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class EventRepository implements EventRepositoryInterface
 {
     public function create(array $data): Event
-    {
+    {\App\User\Models\User::paginate();
         return Event::create($data);
     }
 

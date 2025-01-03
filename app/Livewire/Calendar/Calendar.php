@@ -8,7 +8,9 @@ use App\Event\Models\Event;
 use App\Notifications\Traits\NotificationDispatcherTrait;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Renderless;
 use Livewire\Component;
 use Throwable;
 
@@ -16,6 +18,11 @@ class Calendar extends Component
 {
     use NotificationDispatcherTrait;
 
+    private const COLOR_BLUE = '#3F83F880';
+    private const COLOR_RED = '#FF5733';
+    private const COLOR_GREEN = '#008000';
+
+    #[Locked]
     public ?int $userId;
 
     public array $events;
@@ -50,6 +57,7 @@ class Calendar extends Component
         }
     }
 
+    #[Renderless]
     public function getEvents(EventRepositoryInterface $eventRepository): array
     {
         $requests = $eventRepository
@@ -90,9 +98,9 @@ class Calendar extends Component
     private function getColorByState(EventStateEnum $state)
     {
         return match ($state) {
-            EventStateEnum::Pending => '#3F83F880',
-            EventStateEnum::Approved => '#008000',
-            default => '#FF5733'
+            EventStateEnum::Pending => self::COLOR_BLUE,
+            EventStateEnum::Approved => self::COLOR_GREEN,
+            default => self::COLOR_RED,
         };
     }
 }

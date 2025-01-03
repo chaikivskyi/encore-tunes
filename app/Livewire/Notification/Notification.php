@@ -4,6 +4,7 @@ namespace App\Livewire\Notification;
 
 use App\Notifications\Enums\NotificationTypeEnum;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Renderless;
 use Livewire\Component;
 
 class Notification extends Component
@@ -30,6 +31,7 @@ class Notification extends Component
         return view('livewire.notification.notification');
     }
 
+    #[Renderless]
     public function getNotificationColor(): string
     {
         return match ($this->type) {
