@@ -4,7 +4,7 @@ namespace App\Livewire\RequestAvailability;
 
 use App\Event\Constants\LockKeys;
 use App\Event\Contracts\EventRepositoryInterface;
-use App\Notifications\Traits\NotificationDispatcherTrait;
+use App\Theme\Traits\NotificationDispatcherTrait;
 use Carbon\Carbon;
 use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Support\Facades\Auth;

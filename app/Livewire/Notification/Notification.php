@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Notification;
 
-use App\Notifications\Enums\NotificationTypeEnum;
+use App\Theme\Enums\NotificationTypeEnum;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Renderless;
 use Livewire\Component;

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Notifications\Traits;
+namespace App\Theme\Traits;
 
-use App\Notifications\Enums\NotificationTypeEnum;
+use App\Theme\Enums\NotificationTypeEnum;
 
 trait NotificationDispatcherTrait
 {

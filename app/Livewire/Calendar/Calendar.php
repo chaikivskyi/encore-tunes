@@ -5,7 +5,8 @@ namespace App\Livewire\Calendar;
 use App\Event\Contracts\EventRepositoryInterface;
 use App\Event\Enums\EventStateEnum;
 use App\Event\Models\Event;
-use App\Notifications\Traits\NotificationDispatcherTrait;
+use App\Theme\Traits\NotificationDispatcherTrait;
+use App\Theme\Enums\ColorEnum;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Locked;
@@ -17,10 +18,6 @@ use Throwable;
 class Calendar extends Component
 {
     use NotificationDispatcherTrait;
-
-    private const COLOR_BLUE = '#3F83F880';
-    private const COLOR_RED = '#FF5733';
-    private const COLOR_GREEN = '#008000';
 
     #[Locked]
     public ?int $userId;
@@ -98,9 +95,9 @@ class Calendar extends Component
     private function getColorByState(EventStateEnum $state)
     {
         return match ($state) {
-            EventStateEnum::Pending => self::COLOR_BLUE,
-            EventStateEnum::Approved => self::COLOR_GREEN,
-            default => self::COLOR_RED,
+            EventStateEnum::Pending => ColorEnum::COLOR_BLUE->value,
+            EventStateEnum::Approved => ColorEnum::COLOR_GREEN->value,
+            default => ColorEnum::COLOR_RED->value,
         };
     }
 }

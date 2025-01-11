@@ -4,7 +4,7 @@ namespace App\Livewire\ContactMe;
 
 use App\ContactMe\Mail\ContactMeMail;
 use App\ContactMe\Settings\ContactMeSettings;
-use App\Notifications\Traits\NotificationDispatcherTrait;
+use App\Theme\Traits\NotificationDispatcherTrait;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Validate;

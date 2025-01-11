@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Notifications\Enums;
+namespace App\Theme\Enums;
 
 enum NotificationTypeEnum: string
 {
