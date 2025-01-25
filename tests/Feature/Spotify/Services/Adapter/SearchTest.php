@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Spotify\Services\Adapter;
+namespace Tests\Feature\Spotify\Services\Adapter;
 
 use App\Spotify\DTO\SpotifySearchData;
 use App\Spotify\Enums\SpotifySearchTypeEnum;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\ContactMe;
+namespace Tests\Feature\ContactMe;
 
 use App\ContactMe\Mail\ContactMeMail;
 use App\ContactMe\Settings\ContactMeSettings;

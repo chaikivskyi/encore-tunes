@@ -5,20 +5,20 @@ namespace App\Event\Repositories;
 use App\Event\Contracts\EventRepositoryInterface;
 use App\Event\Models\Event;
 use Carbon\Carbon;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class EventRepository implements EventRepositoryInterface
 {
     public function create(array $data): Event
-    {\App\User\Models\User::paginate();
+    {
         return Event::create($data);
     }
 
-    public function getById(int $id): ?Event
+    public function getById(int $id): Event
     {
-        return Event::find($id);
+        return Event::findOrFail($id);
     }
 
     public function update(Event $event, array $data): bool
@@ -26,11 +26,16 @@ class EventRepository implements EventRepositoryInterface
         return $event->update($data);
     }
 
-    public function getActiveEvents(): Collection
+    public function delete(Event $event): ?bool
+    {
+        return $event->delete();
+    }
+
+    public function getActiveEvents(int $page = 1, ?int $limit = null): Paginator
     {
         return Event::withActiveStates()
             ->whereDate('date_to', '>', now()->toDateString())
-            ->get();
+            ->paginate($limit, page: $page);
     }
 
     public function countActiveEventsBeetweenDates(Carbon $from, Carbon $to): int

@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Spotify\Services\Adapter;
+namespace Tests\Feature\Spotify\Services\Adapter;
 
 use App\Spotify\Services\Adapter\AccessToken;
 use Tests\TestCase;

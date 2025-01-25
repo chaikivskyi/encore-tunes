@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Spotify;
+namespace Tests\Feature\Spotify;
 
 use App\Livewire\Spotify\SpotifyTracks;
 use App\Spotify\Settings\SpotifySettings;
